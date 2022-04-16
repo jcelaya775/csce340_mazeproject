@@ -19,11 +19,23 @@ public class Maze {
                     maze[i][j] = line.charAt(j);
                 }
             }
+
+            s.close();
         } catch (FileNotFoundException e) {
             System.out.println(e);
         }
 
-        boolean pathFound = findPath(maze, 12, 5);
+        // get user input
+        s = new Scanner(System.in);
+
+        System.out.print("Enter row: ");
+        int startRow = s.nextInt();
+        System.out.print("Enter col: ");
+        int startCol = s.nextInt();
+        System.out.println();
+
+        // search for exit path
+        boolean pathFound = findPath(maze, startRow, startCol);
         if (pathFound)
             System.out.println("I am free!");
         else
@@ -36,8 +48,6 @@ public class Maze {
             }
             System.out.println();
         }
-
-        s.close();
     }
 
     public static boolean findPath(char maze[][], int startRow, int startCol) {
@@ -52,8 +62,8 @@ public class Maze {
         if (visited[row][col])
             return false;
 
-        visited[row][col] = true;
         maze[row][col] = '+';
+        visited[row][col] = true;
 
         Stack<int[]> stack = new Stack<>();
 
@@ -74,12 +84,8 @@ public class Maze {
             int newRow = square[0];
             int newCol = square[1];
 
-            char[][] temp = maze.clone();
-            boolean foundExit = findPath(maze, visited, newRow, newCol);
-            if (foundExit)
+            if (findPath(maze, visited, newRow, newCol))
                 return true;
-            else
-                maze = temp;
         }
 
         return false;
