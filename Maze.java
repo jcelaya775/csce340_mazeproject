@@ -14,6 +14,7 @@ public class Maze {
         try {
             s = new Scanner(new File("input.txt"));
 
+            // read from file
             for (int i = 0; i < 20; i++) {
                 String line = s.nextLine();
                 for (int j = 0; j < 20; j++) {
@@ -21,6 +22,7 @@ public class Maze {
                 }
             }
 
+            // make a global copy of the maze
             globalMaze = shallowCopy(maze);
 
             s.close();
@@ -53,12 +55,12 @@ public class Maze {
             // search for exit path
             boolean pathFound = findPath(maze, startRow, startCol);
 
+            // output results
             System.out.print("\nResult:");
             if (pathFound)
                 System.out.println(" I am free!");
             else
                 System.out.println(" Help, I am trapped!");
-
             printMaze(maze);
 
             // prompt user to continue
@@ -90,13 +92,13 @@ public class Maze {
         Stack<int[]> stack = new Stack<>();
 
         // if valid square -> check square
-        if (row - 1 >= 0 && maze[row - 1][col] != '1') // check up
+        if (row - 1 >= 0 && maze[row - 1][col] != '1' && !visited[row - 1][col]) // check up
             stack.push(new int[] { row - 1, col });
-        if (row + 1 < maze.length && maze[row + 1][col] != '1') // check down
+        if (row + 1 < maze.length && maze[row + 1][col] != '1' && !visited[row + 1][col]) // check down
             stack.push(new int[] { row + 1, col });
-        if (col - 1 >= 0 && maze[row][col - 1] != '1') // check left
+        if (col - 1 >= 0 && maze[row][col - 1] != '1' && !visited[row][col - 1]) // check left
             stack.push(new int[] { row, col - 1 });
-        if (col + 1 < maze.length && maze[row][col + 1] != '1') // check right
+        if (col + 1 < maze.length && maze[row][col + 1] != '1' && !visited[row][col + 1]) // check right
             stack.push(new int[] { row, col + 1 });
 
         // check up, down, left, right while possible
