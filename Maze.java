@@ -36,21 +36,30 @@ public class Maze {
         String ans = "";
         do {
             // get user input
-            int startRow = -1, startCol = -1;
-            while (startRow < 0 || startRow > 19) {
-                System.out.print("Enter row: ");
-                startRow = s.nextInt();
+            int startRow, startCol;
 
-                if (startRow < 0 || startRow > 19)
-                    System.out.println("That row is out of bounds. Please try again.");
-            }
-            while (startCol < 0 || startCol > 19) {
-                System.out.print("Enter col: ");
-                startCol = s.nextInt();
+            do {
+                startRow = -1;
+                startCol = -1;
 
-                if (startCol < 0 || startCol > 19)
-                    System.out.println("That column is out of bounds. Please try again.");
-            }
+                while (startRow < 0 || startRow > 19) {
+                    System.out.print("Enter row: ");
+                    startRow = s.nextInt();
+
+                    if (startRow < 0 || startRow > 19)
+                        System.out.println("That row is out of bounds. Please try again.");
+                }
+                while (startCol < 0 || startCol > 19) {
+                    System.out.print("Enter col: ");
+                    startCol = s.nextInt();
+
+                    if (startCol < 0 || startCol > 19)
+                        System.out.println("That column is out of bounds. Please try again.");
+                }
+
+                if (maze[startRow][startCol] == '1')
+                    System.out.println("That square contains a 1. Please enter another coordinate.");
+            } while (maze[startRow][startCol] == '1');
 
             // search for exit path
             boolean pathFound = findPath(maze, startRow, startCol);
@@ -83,8 +92,6 @@ public class Maze {
     public static boolean findPath(char maze[][], boolean[][] visited, int row, int col) {
         if (maze[row][col] == 'E')
             return true;
-        if (visited[row][col])
-            return false;
 
         maze[row][col] = '+';
         visited[row][col] = true;
